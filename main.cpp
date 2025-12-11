@@ -115,12 +115,12 @@ int main() {
     Tree<string> adventureTree;
 
     // TODO: Students, create the root from rawNodes[0]
-    // adventureTree.createRoot(rawNodes[0].id, rawNodes[0].text);
+    adventureTree.createRoot(rawNodes[0].id, rawNodes[0].text);
 
     // TODO: Students, add all remaining nodes
-    // for (int i = 1; i < rawNodes.size(); i++) {
-    //     adventureTree.addNode(...);
-    // }
+    for (int i = 1; i < rawNodes.size(); i++) {
+         adventureTree.addNode(...);
+    }
 
     // TODO: Students, implement a method in Tree<T> called playGame()
     // This method should:
@@ -133,11 +133,53 @@ int main() {
     //
     // Example call after tree construction:
     // adventureTree.playGame();
+    void playGame() const {
+        if (!root) {
+            cout << "No story loaded!\n";
+            return;
+        }
+
+        Node<T>* current = root;
+
+        while (true) {
+            cout << current->data << "\n\n";
+
+            if (current->children.empty()) {
+                cout << "=== THE END ===\n";
+                break;
+            }
+
+            cout << "Choose your path:\n";
+            for (size_t i = 0; i < current->children.size(); ++i) {
+                cout << "  " << (i + 1) << ". Go to node [" << current->children[i]->id << "]\n";
+            }
+
+            cout << "\nEnter your choice (1-" << current->children.size() << "): ";
+            string input;
+            getline(cin, input);
+
+            int choice = 0;
+            try {
+                choice = stoi(input);
+            } catch (...) {
+                cout << "Invalid input. Try again.\n";
+                continue;
+            }
+
+            if (choice < 1 || choice > static_cast<int>(current->children.size())) {
+                cout << "Invalid choice. Try again.\n";
+                continue;
+            }
+
+            current = current->children[choice - 1];
+            cout << "\n";
+        }
+    }
 
     cout << "Story loaded into your dynamic tree structure." << endl;
     cout << "Implement the Tree class to enable traversal and printing." << endl;
 
     // TODO: Once implemented, uncomment to allow full gameplay.
-    // adventureTree.playGame();
+    adventureTree.playGame();
     return 0;
 }
